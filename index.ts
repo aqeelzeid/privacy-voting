@@ -1,6 +1,7 @@
 import { generateUserAccount, AccountSchemaWithoutAccountId } from './account/account';
 import { createCryptographicAdapter } from './ports-and-adapters/cryptographic-adapter';
 import { createHashingAdapter } from './ports-and-adapters/hashing-adapter';
+import {NodePersistenceAdapter} from './ports-and-adapters/persistence-adapter'
 
 // Step 1: Create 7 Users accounts
 const users = [
@@ -62,6 +63,7 @@ async function createAccountsForUsers(users: User[]): Promise<UserWithAccount[]>
   // Create adapters
   const cryptoAdapter = createCryptographicAdapter();
   const hashingAdapter = createHashingAdapter();
+  const persistanceAdapter = new NodePersistenceAdapter();
 
   const usersWithAccounts: UserWithAccount[] = [];
 
@@ -69,7 +71,8 @@ async function createAccountsForUsers(users: User[]): Promise<UserWithAccount[]>
     // Generate cryptographic account (quiet operation)
     const accountResult = await generateUserAccount({
       cryptographicPort: cryptoAdapter,
-      hashingPort: hashingAdapter
+      hashingPort: hashingAdapter,
+      persistencePort: persistanceAdapter
     }, {
       email: user.email,
       password: user.password
