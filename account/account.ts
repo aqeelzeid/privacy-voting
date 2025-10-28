@@ -1,4 +1,5 @@
 import { Result, ok, err } from '../error';
+import { Dependencies } from '../ports-and-adapters/dependencies';
 import {
   ACCOUNT_SCHEMA,
   PRIMARY_AUTHENTICATION_USER_SHARE_SCHEMA,
@@ -79,38 +80,6 @@ export interface AccountGenerationError {
   code: string;
   message: string;
   error?: unknown;
-}
-
-// Cryptographic port interface (dependencies)
-export interface CryptographicPort {
-  sha256(data: string): Promise<Result<HashedStringContainer, unknown>>;
-  generatePBKDF2PasswordDerivedKey(password: string): Promise<Result<PasswordDerivedKey, unknown>>;
-  generateAESGCM256KeyPair(): Promise<Result<{ key: EncodedStringContainer; fingerprint: HashedStringContainer }, unknown>>;
-  generateRSA2048OAEPKeyPair(): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>>;
-  generateRSA2048PSSKeyPair(): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>>;
-  getAESGCM256SymmetricKeyFromPBKDF2PasswordDerivedKey(
-    pdk: PasswordDerivedKey,
-    password: string
-  ): Promise<Result<{ key: EncodedStringContainer; fingerprint: HashedStringContainer }, unknown>>;
-  encryptAESGCM256SymmetricKeyWithAESGCM256(
-    keyToEncrypt: { key: EncodedStringContainer; fingerprint: HashedStringContainer },
-    encryptionKey: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
-  ): Promise<Result<SymmetricEncryptsSymmetricKey, unknown>>;
-  encryptRSA2048OAEPKeyPairWithAESGCM256(
-    keyPairToEncrypt: AESGCM256EncryptsRSAOAEP2048Key,
-    encryptionKey: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
-  ): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>>;
-  encryptRSA2048PSSKeyPairWithAESGCM256(
-    keyPairToEncrypt: AESGCM256EncryptsRSAOAEP2048Key,
-    encryptionKey: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
-  ): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>>;
-}
-
-export interface Dependencies {
-  cryptographicPort: CryptographicPort;
-  hashingPort: {
-    sha256(data: string): Promise<Result<HashedStringContainer, unknown>>;
-  };
 }
 
 // Account generation parameters

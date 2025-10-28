@@ -1,5 +1,6 @@
 import { generateUserAccount, AccountSchemaWithoutAccountId } from './account/account';
-import { createCryptographicAdapter, createHashingAdapter } from './account/adapters';
+import { createCryptographicAdapter } from './ports-and-adapters/cryptographic-adapter';
+import { createHashingAdapter } from './ports-and-adapters/hashing-adapter';
 
 // Step 1: Create 7 Users accounts
 const users = [
