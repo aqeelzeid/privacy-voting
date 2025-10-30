@@ -7,6 +7,7 @@ import {
   AESGCM256EncryptsRSAOAEP2048Key,
   EncodedStringContainer
 } from '../account/account';
+import { PublicKeyContainer } from './adapters/threshold-signature/port';
 
 export interface CryptographicPort {
   sha256(data: string): Promise<Result<HashedStringContainer, unknown>>;
@@ -30,4 +31,29 @@ export interface CryptographicPort {
     keyPairToEncrypt: AESGCM256EncryptsRSAOAEP2048Key,
     encryptionKey: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
   ): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>>;
+
+  // RSA-OAEP encryption/decryption for DKG shares
+  encryptWithRSAOAEP(
+    data: Uint8Array,
+    publicKey: PublicKeyContainer
+  ): Promise<Result<EncodedStringContainer, unknown>>;
+
+  decryptWithRSAOAEP(
+    encryptedData: EncodedStringContainer,
+    privateKey: AESGCM256EncryptsRSAOAEP2048Key,
+    kek: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
+  ): Promise<Result<Uint8Array, unknown>>;
+
+  // RSA-PSS signing/verification for DKG commitments and shares
+  signWithRSAPSS(
+    data: Uint8Array,
+    privateKey: AESGCM256EncryptsRSAOAEP2048Key,
+    kek: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
+  ): Promise<Result<string, unknown>>;
+
+  verifyRSAPSSSignature(
+    data: Uint8Array,
+    signature: string,
+    publicKey: PublicKeyContainer
+  ): Promise<Result<boolean, unknown>>;
 }

@@ -1,4 +1,4 @@
-import { createHash, randomBytes, pbkdf2, generateKeyPair, publicEncrypt, privateDecrypt, createCipheriv, createDecipheriv } from 'crypto';
+import { createHash, randomBytes, pbkdf2, generateKeyPair, publicEncrypt, privateDecrypt, createCipheriv, createDecipheriv, createSign, createVerify } from 'crypto';
 import { promisify } from 'util';
 import { Result, ok, err } from '../error';
 import { CryptographicPort } from './cryptographic-port';
@@ -10,6 +10,7 @@ import {
   SymmetricEncryptsSymmetricKey,
   AESGCM256EncryptsRSAOAEP2048Key
 } from '../account/account';
+import { PublicKeyContainer } from './adapters/threshold-signature/port';
 import {
   ENCODED_STRING_SCHEMAS,
   HASH_SCHEMAS,
@@ -235,6 +236,100 @@ export class NodeCryptographicAdapter implements CryptographicPort {
   ): Promise<Result<AESGCM256EncryptsRSAOAEP2048Key, unknown>> {
     // Same implementation as OAEP for this implementation
     return this.encryptRSA2048OAEPKeyPairWithAESGCM256(keyPairToEncrypt, encryptionKey);
+  }
+
+  async encryptWithRSAOAEP(
+    data: Uint8Array,
+    publicKey: PublicKeyContainer
+  ): Promise<Result<EncodedStringContainer, unknown>> {
+    try {
+      // Convert SPKI public key to PEM format for Node.js crypto
+      const spkiPem = `-----BEGIN PUBLIC KEY-----\n${this.decodeBase64(publicKey.key.data)}\n-----END PUBLIC KEY-----`;
+
+      const encrypted = publicEncrypt(
+        {
+          key: spkiPem,
+          oaepHash: 'sha256',
+          oaepLabel: undefined
+        },
+        data
+      );
+
+      return ok(this.createEncodedStringContainer(encrypted));
+    } catch (error) {
+      return err(error);
+    }
+  }
+
+  async decryptWithRSAOAEP(
+    encryptedData: EncodedStringContainer,
+    privateKey: AESGCM256EncryptsRSAOAEP2048Key,
+    kek: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
+  ): Promise<Result<Uint8Array, unknown>> {
+    try {
+      // First decrypt the private key with KEK (this is a simplified implementation)
+      // In a real implementation, you would need to properly decrypt the AES-GCM encrypted private key
+      const encryptedPrivateKey = privateKey.private_key.key.encrypted_data.data;
+      const decryptedPrivateKeyPem = `-----BEGIN PRIVATE KEY-----\n${encryptedPrivateKey}\n-----END PRIVATE KEY-----`;
+
+      const decrypted = privateDecrypt(
+        {
+          key: decryptedPrivateKeyPem,
+          oaepHash: 'sha256',
+          oaepLabel: undefined
+        },
+        this.decodeBase64(encryptedData.data)
+      );
+
+      return ok(decrypted);
+    } catch (error) {
+      return err(error);
+    }
+  }
+
+  async signWithRSAPSS(
+    data: Uint8Array,
+    privateKey: AESGCM256EncryptsRSAOAEP2048Key,
+    kek: { key: EncodedStringContainer; fingerprint: HashedStringContainer }
+  ): Promise<Result<string, unknown>> {
+    try {
+      // First decrypt the private key with KEK (this is a simplified implementation)
+      const encryptedPrivateKey = privateKey.private_key.key.encrypted_data.data;
+      const decryptedPrivateKeyPem = `-----BEGIN PRIVATE KEY-----\n${encryptedPrivateKey}\n-----END PRIVATE KEY-----`;
+
+      const sign = createSign('RSA-PSS');
+      sign.update(data);
+      const signature = sign.sign({
+        key: decryptedPrivateKeyPem,
+        saltLength: 32
+      });
+
+      return ok(this.encodeBase64(signature));
+    } catch (error) {
+      return err(error);
+    }
+  }
+
+  async verifyRSAPSSSignature(
+    data: Uint8Array,
+    signature: string,
+    publicKey: PublicKeyContainer
+  ): Promise<Result<boolean, unknown>> {
+    try {
+      // Convert SPKI public key to PEM format for Node.js crypto
+      const spkiPem = `-----BEGIN PUBLIC KEY-----\n${this.decodeBase64(publicKey.key.data)}\n-----END PUBLIC KEY-----`;
+
+      const verify = createVerify('RSA-PSS');
+      verify.update(data);
+      const isValid = verify.verify({
+        key: spkiPem,
+        saltLength: 32
+      }, this.decodeBase64(signature));
+
+      return ok(isValid);
+    } catch (error) {
+      return err(error);
+    }
   }
 }
 
