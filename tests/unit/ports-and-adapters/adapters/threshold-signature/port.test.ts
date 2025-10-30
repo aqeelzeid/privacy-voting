@@ -1,4 +1,4 @@
-import { calculateThreshold } from '../../../../../ports-and-adapters/adapters/threshold-signature/port';
+import { calculateThreshold } from '../../../../../ports-and-adapters/threshold-signature/port';
 
 describe('Threshold Signature Port Utilities', () => {
   describe('calculateThreshold', () => {

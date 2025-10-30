@@ -1,8 +1,8 @@
-import { Result, ok } from '../../../../error';
-import { CryptographicPort } from '../../../cryptographic-port';
+import { Result, ok } from '../../../error';
+import { CryptographicPort } from '../../cryptographic-port';
 import { PublicKeyContainer } from '../port';
-import { AESGCM256EncryptsRSAOAEP2048Key, HashedStringContainer, EncodedStringContainer } from '../../../../account/account';
-import { ENCODED_STRING_SCHEMAS } from '../../../../account/namespace';
+import { AESGCM256EncryptsRSAOAEP2048Key, HashedStringContainer, EncodedStringContainer } from '../../../account/account';
+import { ENCODED_STRING_SCHEMAS } from '../../../account/namespace';
 import { bigintTo32Bytes, bytesToBigint } from './conversion';
 
 /**

@@ -1,4 +1,4 @@
-import { Result, err, ok } from "../../../../error";
+import { Result, err, ok } from "../../../error";
 import { DistributedKeyGenerationPort, DKGSession, StartDKGSessionError, StartDKGSessionParameters, PublicKeyContainer, calculateThreshold } from "../port";
 import { spkiPublicKeyToBytes } from "../cryptographic-utils";
 

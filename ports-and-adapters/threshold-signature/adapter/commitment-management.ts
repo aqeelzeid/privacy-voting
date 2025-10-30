@@ -1,4 +1,4 @@
-import { Result, err, ok } from "../../../../error";
+import { Result, err, ok } from "../../../error";
 import { DKGSession, PublishCommitmentError, PublishCommitmentParameters } from "../port";
 
 export function publishCommitment(

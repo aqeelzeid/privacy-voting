@@ -10,7 +10,7 @@ import {
   SymmetricEncryptsSymmetricKey,
   AESGCM256EncryptsRSAOAEP2048Key
 } from '../account/account';
-import { PublicKeyContainer } from './adapters/threshold-signature/port';
+import { PublicKeyContainer } from './threshold-signature/port';
 import {
   ENCODED_STRING_SCHEMAS,
   HASH_SCHEMAS,

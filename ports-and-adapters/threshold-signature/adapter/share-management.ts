@@ -1,4 +1,4 @@
-import { Result, err, ok } from "../../../../error";
+import { Result, err, ok } from "../../../error";
 import { DKGSession, SubmitEncryptedShareError, SubmitEncryptedShareParameters, FinalizeDKGSessionError, FinalizeDKGSessionParameters } from "../port";
 import { computeGroupPublicKey } from "../cryptographic-utils";
 

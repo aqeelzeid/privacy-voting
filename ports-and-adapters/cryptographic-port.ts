@@ -7,7 +7,7 @@ import {
   AESGCM256EncryptsRSAOAEP2048Key,
   EncodedStringContainer
 } from '../account/account';
-import { PublicKeyContainer } from './adapters/threshold-signature/port';
+import { PublicKeyContainer } from './threshold-signature/port';
 
 export interface CryptographicPort {
   sha256(data: string): Promise<Result<HashedStringContainer, unknown>>;

@@ -1,4 +1,4 @@
-import { randomPolynomial, evalPoly } from '../../../../../../ports-and-adapters/adapters/threshold-signature/cryptographic-utils/polynomial';
+import { randomPolynomial, evalPoly } from '../../../../../../ports-and-adapters/threshold-signature/cryptographic-utils/polynomial';
 
 describe('Polynomial Utilities', () => {
   describe('randomPolynomial', () => {

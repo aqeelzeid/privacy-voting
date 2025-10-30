@@ -1,7 +1,7 @@
 import { PointG1 } from '@noble/bls12-381';
 import { PublicKeyContainer } from '../port';
-import { EncodedStringContainer } from '../../../../account/account';
-import { ENCODED_STRING_SCHEMAS } from '../../../../account/namespace';
+import { EncodedStringContainer } from '../../../account/account';
+import { ENCODED_STRING_SCHEMAS } from '../../../account/namespace';
 
 /**
  * Convert hex string to Uint8Array
