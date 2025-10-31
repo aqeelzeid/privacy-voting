@@ -1,8 +1,8 @@
-import { Result, err, ok } from "../../../error";
-import { ClientPolynomialData, GeneratePolynomialError, EncryptSharesError, VerifiedSharesResult, VerifySharesError, PublicKeyContainer } from "../port";
-import { randomPolynomial, computeCommitments, evalPoly, encryptShareWithRSA, decryptShareWithRSA, signCommitments, commitmentCheck, aggregateShares } from "../cryptographic-utils";
-import { CryptographicPort } from "../../cryptographic-port";
-import { AESGCM256EncryptsRSAOAEP2048Key, EncodedStringContainer, HashedStringContainer } from "../../../account/account";
+import { Result, err, ok } from "../../../../error";
+import { ClientPolynomialData, GeneratePolynomialError, EncryptSharesError, VerifiedSharesResult, VerifySharesError, PublicKeyContainer } from "../../port";
+import { randomPolynomial, computeCommitments, evalPoly, encryptShareWithRSA, decryptShareWithRSA, signCommitments, commitmentCheck, aggregateShares } from "../../cryptographic-utils";
+import { CryptographicPort } from "../../../cryptographic/port";
+import { AESGCM256EncryptsRSAOAEP2048Key, EncodedStringContainer, HashedStringContainer } from "../../../../account/account";
 
 export async function generatePolynomialAndCommitments(
     threshold: number,

@@ -32,7 +32,7 @@ export interface PasswordDerivedKey {
 }
 
 export interface AESGCM256EncryptedData {
-  format: 'aes-gcm-256';
+  format: typeof ENCRYPTED_DATA_SCHEMAS.SYMMETRIC.AES_GCM_256;
   tag: EncodedStringContainer;
   iv: EncodedStringContainer;
   encrypted_data: EncodedStringContainer;
@@ -40,6 +40,12 @@ export interface AESGCM256EncryptedData {
 }
 
 export interface SymmetricEncryptsSymmetricKey {
+  format: typeof ENCRYPTED_KEY_SCHEMAS.SYMMETRIC_ENCRYPTS_SYMMETRIC.AES_GCM_256_ENCRYPTS_AES_GCM_256;
+  key: AESGCM256EncryptedData;
+  fingerprint: HashedStringContainer;
+}
+
+export interface AESGCM256EncryptsAESGCM256Key {
   format: typeof ENCRYPTED_KEY_SCHEMAS.SYMMETRIC_ENCRYPTS_SYMMETRIC.AES_GCM_256_ENCRYPTS_AES_GCM_256;
   key: AESGCM256EncryptedData;
   fingerprint: HashedStringContainer;
@@ -58,12 +64,124 @@ export interface AESGCM256EncryptsRSAOAEP2048Key {
   };
 }
 
+// New types matching the reference implementation
+export interface PBKDF2PasswordDerivedKey {
+  format: typeof KEY_SCHEMAS.PASSWORD_DERIVED.PBKDF2;
+  algorithm: string;
+  salt: EncodedStringContainer;
+  iterations: number;
+  key_length: number;
+  derived_key: EncodedStringContainer;
+  fingerprint: HashedStringContainer;
+}
+
+export interface AESGCM256SymmetricKey {
+  format: typeof KEY_SCHEMAS.SYMMETRIC.AES_GCM_256;
+  key: EncodedStringContainer;
+  fingerprint: HashedStringContainer;
+}
+
+export interface RSAOAEP2048AsymmetricKey {
+  format: typeof KEY_SCHEMAS.ASYMMETRIC.RSA_OAEP_2048;
+  fingerprint: HashedStringContainer;
+  public_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.SPKI;
+    key: EncodedStringContainer;
+  };
+  private_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.PKCS8;
+    key: EncodedStringContainer;
+  };
+}
+
+export interface RSAPSS2048AsymmetricKey {
+  format: typeof KEY_SCHEMAS.ASYMMETRIC.RSA_PSS_2048;
+  fingerprint: HashedStringContainer;
+  public_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.SPKI;
+    key: EncodedStringContainer;
+  };
+  private_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.PKCS8;
+    key: EncodedStringContainer;
+  };
+}
+
+export interface AESGCM256EncryptsRSAPSS2048Key {
+  format: typeof ENCRYPTED_KEY_SCHEMAS.SYMMETRIC_ENCRYPTS_ASYMMETRIC.AES_GCM_256_ENCRYPTS_RSA_PSS_2048;
+  fingerprint: HashedStringContainer;
+  public_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.SPKI;
+    key: EncodedStringContainer;
+  };
+  private_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.PKCS8;
+    key: AESGCM256EncryptedData;
+  };
+}
+
+export interface AESGCMSymmetricEncryptedData {
+  format: typeof ENCRYPTED_DATA_SCHEMAS.SYMMETRIC.AES_GCM_256;
+  tag: EncodedStringContainer;
+  iv: EncodedStringContainer;
+  encrypted_data: EncodedStringContainer;
+  fingerprint: HashedStringContainer;
+}
+
+export interface HybridAESGCMEncryptedData {
+  format: typeof ENCRYPTED_DATA_SCHEMAS.HYBRID.AES_GCM_256;
+  asymmetric_key: {
+    schema: typeof ENCRYPTED_DATA_SCHEMAS.ASYMMETRIC.RSA_OAEP_2048;
+    fingerprint: HashedStringContainer;
+  };
+  encrypted_key: {
+    format: typeof ENCRYPTED_DATA_SCHEMAS.SYMMETRIC.AES_GCM_256;
+    tag: EncodedStringContainer;
+    iv: EncodedStringContainer;
+    encrypted_data: EncodedStringContainer;
+  };
+  encrypted_data: {
+    format: typeof ENCRYPTED_DATA_SCHEMAS.SYMMETRIC.AES_GCM_256;
+    tag: EncodedStringContainer;
+    iv: EncodedStringContainer;
+    encrypted_data: EncodedStringContainer;
+  };
+}
+
+export interface RSAOAEP2048EncryptsRSAPSS2048Key {
+  format: typeof ENCRYPTED_KEY_SCHEMAS.ASYMMETRIC_ENCRYPTS_ASYMMETRIC.RSA_OAEP_2048_ENCRYPTS_RSA_PSS_2048;
+  fingerprint: HashedStringContainer;
+  public_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.SPKI;
+    key: EncodedStringContainer;
+  };
+  private_key: {
+    format: typeof KEY_SCHEMAS.ENCODING.PKCS8;
+    key: {
+      format: typeof ENCRYPTED_DATA_SCHEMAS.ASYMMETRIC.RSA_OAEP_2048;
+      encrypted_data: EncodedStringContainer;
+      fingerprint: HashedStringContainer;
+    };
+  };
+  encryption_key_fingerprint: HashedStringContainer;
+}
+
+export interface RSAOAEP2048EncryptsAESGCM256Key {
+  format: typeof ENCRYPTED_KEY_SCHEMAS.ASYMMETRIC_ENCRYPTS_SYMMETRIC.RSA_OAEP_2048_ENCRYPTS_AES_GCM_256;
+  fingerprint: HashedStringContainer;
+  key: {
+    format: typeof ENCRYPTED_DATA_SCHEMAS.ASYMMETRIC.RSA_OAEP_2048;
+    encrypted_data: EncodedStringContainer;
+    fingerprint: HashedStringContainer;
+  };
+}
+
 export interface PrimaryAuthenticationUserShare {
   schema: typeof PRIMARY_AUTHENTICATION_USER_SHARE_SCHEMA;
-  passwordDerivedKey: PasswordDerivedKey;
-  keyEncryptionKey: SymmetricEncryptsSymmetricKey;
+  passwordDerivedKey: PBKDF2PasswordDerivedKey;
+  keyEncryptionKey: AESGCM256EncryptsAESGCM256Key;
   secretEncryptionKey: AESGCM256EncryptsRSAOAEP2048Key;
-  secretSigningKey: AESGCM256EncryptsRSAOAEP2048Key;
+  secretSigningKey: AESGCM256EncryptsRSAPSS2048Key;
 }
 
 export interface AccountSchemaWithoutAccountId {

@@ -1,5 +1,5 @@
-import { Result, err, ok } from "../../../error";
-import { DKGSession, PublishCommitmentError, PublishCommitmentParameters } from "../port";
+import { Result, err, ok } from "../../../../error";
+import { DKGSession, PublishCommitmentError, PublishCommitmentParameters } from "../../port";
 
 export function publishCommitment(
     sessions: Map<string, DKGSession>,

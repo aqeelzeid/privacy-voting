@@ -1,6 +1,6 @@
-import { Result, err, ok } from "../../../error";
-import { DKGSession, SubmitEncryptedShareError, SubmitEncryptedShareParameters, FinalizeDKGSessionError, FinalizeDKGSessionParameters } from "../port";
-import { computeGroupPublicKey } from "../cryptographic-utils";
+import { Result, err, ok } from "../../../../error";
+import { DKGSession, SubmitEncryptedShareError, SubmitEncryptedShareParameters, FinalizeDKGSessionError, FinalizeDKGSessionParameters } from "../../port";
+import { computeGroupPublicKey } from "../../cryptographic-utils";
 
 export function submitEncryptedShare(
     sessions: Map<string, DKGSession>,

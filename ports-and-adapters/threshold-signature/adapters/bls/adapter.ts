@@ -1,7 +1,7 @@
-import { Result } from "../../../error";
-import { DistributedKeyGenerationPort, DKGSession, StartDKGSessionError, StartDKGSessionParameters, PublishCommitmentError, PublishCommitmentParameters, SubmitEncryptedShareError, SubmitEncryptedShareParameters, FinalizeDKGSessionError, FinalizeDKGSessionParameters, ClientPolynomialData, GeneratePolynomialError, EncryptSharesError, VerifiedSharesResult, VerifySharesError, PublicKeyContainer } from "../port";
-import { CryptographicPort } from "../../cryptographic-port";
-import { AESGCM256EncryptsRSAOAEP2048Key, EncodedStringContainer, HashedStringContainer } from "../../../account/account";
+import { Result } from "../../../../error";
+import { DistributedKeyGenerationPort, DKGSession, StartDKGSessionError, StartDKGSessionParameters, PublishCommitmentError, PublishCommitmentParameters, SubmitEncryptedShareError, SubmitEncryptedShareParameters, FinalizeDKGSessionError, FinalizeDKGSessionParameters, ClientPolynomialData, GeneratePolynomialError, EncryptSharesError, VerifiedSharesResult, VerifySharesError, PublicKeyContainer } from "../../port";
+import { CryptographicPort } from "../../../cryptographic/port";
+import { AESGCM256EncryptsRSAOAEP2048Key, EncodedStringContainer, HashedStringContainer } from "../../../../account/account";
 import { startDKGSession } from "./session-management";
 import { publishCommitment } from "./commitment-management";
 import { submitEncryptedShare, finalizeDKGSession } from "./share-management";

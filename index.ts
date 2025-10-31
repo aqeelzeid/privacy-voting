@@ -1,5 +1,5 @@
 import { generateUserAccount, AccountSchemaWithoutAccountId } from './account/account';
-import { createCryptographicAdapter } from './ports-and-adapters/cryptographic-adapter';
+import { NodeCryptographicAdapter } from './ports-and-adapters/cryptographic/node-adapter';
 import { createHashingAdapter } from './ports-and-adapters/hashing-adapter';
 import {NodePersistenceAdapter} from './ports-and-adapters/persistence-adapter'
 
@@ -61,7 +61,7 @@ async function createAccountsForUsers(users: User[]): Promise<UserWithAccount[]>
   console.log('🏗️  Creating cryptographic accounts for users...');
 
   // Create adapters
-  const cryptoAdapter = createCryptographicAdapter();
+  const cryptoAdapter = new NodeCryptographicAdapter();
   const hashingAdapter = createHashingAdapter();
   const persistanceAdapter = new NodePersistenceAdapter();
 

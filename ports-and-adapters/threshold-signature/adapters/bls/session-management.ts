@@ -1,6 +1,6 @@
-import { Result, err, ok } from "../../../error";
-import { DistributedKeyGenerationPort, DKGSession, StartDKGSessionError, StartDKGSessionParameters, PublicKeyContainer, calculateThreshold } from "../port";
-import { spkiPublicKeyToBytes } from "../cryptographic-utils";
+import { Result, err, ok } from "../../../../error";
+import { DistributedKeyGenerationPort, DKGSession, StartDKGSessionError, StartDKGSessionParameters, PublicKeyContainer, calculateThreshold } from "../../port";
+import { spkiPublicKeyToBytes } from "../../cryptographic-utils";
 
 export function startDKGSession(
     sessions: Map<string, DKGSession>,

@@ -1,5 +1,5 @@
-import { DistributedKeyGenerationAdapter } from "../../../../../ports-and-adapters/threshold-signature/adapter/adapter";
-import { CryptographicPort } from "../../../../../ports-and-adapters/cryptographic-port";
+import { DistributedKeyGenerationAdapter } from "../../../../ports-and-adapters/threshold-signature/adapters/bls/adapter";
+import { CryptographicPort } from "../../../../ports-and-adapters/cryptographic/port";
 // Mock the cryptographic port
 const mockCryptographicPort: jest.Mocked<CryptographicPort> = {
   // Add mocked methods as needed

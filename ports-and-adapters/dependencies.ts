@@ -1,4 +1,4 @@
-import { CryptographicPort } from './cryptographic-port';
+import { CryptographicPort } from './cryptographic/port';
 import { HashingPort } from './hashing-port';
 import { PersistencePort } from './persistence-port';
 

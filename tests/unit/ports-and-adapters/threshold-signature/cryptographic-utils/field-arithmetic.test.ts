@@ -1,4 +1,4 @@
-import { mod, randomScalar, powBigInt } from '../../../../../../ports-and-adapters/threshold-signature/cryptographic-utils/field-arithmetic';
+import { mod, randomScalar, powBigInt } from '../../../../../ports-and-adapters/threshold-signature/cryptographic-utils/field-arithmetic';
 
 describe('Field Arithmetic Utilities', () => {
   describe('mod', () => {
