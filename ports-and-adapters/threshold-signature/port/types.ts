@@ -81,7 +81,7 @@ export interface StartDKGSessionParameters {
     participantIds: string[];              // list of member identifiers
     encryptionPublicKeys: Record<string, PublicKeyContainer>; // participantId -> encryption public key
     signingPublicKeys: Record<string, PublicKeyContainer>;    // participantId → signing public key (for verification)
-    scheme: 'BLS' | 'ECDSA' | 'ElGamal';  // which threshold scheme to use
+    scheme: 'BLS' | 'ECDSA' | 'PAILLIER';  // which threshold scheme to use
     mode: 'ONE_OVER_N' | 'MAJORITY' | 'ALL'; // UX mode mapping (1/n, majority, n/n)
     metadata?: Record<string, any>;       // optional, like creation timestamp or creator's note
 }

@@ -95,3 +95,4 @@ export interface VerifySharesError {
     error?: unknown;
 }
 
+
